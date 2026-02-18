@@ -18,232 +18,249 @@ STUDENT_CODE = "student123"
 
 STYLES = """
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
     
     :root {
-        --glass-bg: rgba(255, 255, 255, 0.05);
-        --glass-border: rgba(255, 255, 255, 0.1);
-        --neon-blue: #00f3ff;
-        --neon-purple: #bc13fe;
-        --neon-red: #ff0055;
-        --text-main: #ffffff;
+        --hud-primary: #0aff0a;
+        --hud-dim: #004400;
+        --hud-alert: #ff3333;
+        --bg-color: #050505;
+        --glass: rgba(10, 255, 10, 0.05);
     }
+
+    * { box-sizing: border-box; }
 
     body {
-        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        color: var(--text-main);
-        font-family: 'Outfit', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--hud-primary);
+        font-family: 'Share Tech Mono', monospace;
         margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
         min-height: 100vh;
-        padding: 40px 20px;
+        text-transform: uppercase;
     }
 
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    /* CRT SCANLINE EFFECT OVERLAY */
+    body::after {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        z-index: 2;
+        background-size: 100% 2px, 3px 100%;
+        pointer-events: none;
     }
 
     .container {
-        max-width: 1000px;
+        max-width: 1200px;
         margin: 0 auto;
+        border: 1px solid var(--hud-dim);
+        padding: 20px;
+        position: relative;
     }
-    
-    /* Header Styles */
+
+    /* CORNER MARKERS */
+    .container::before {
+        content: "";
+        position: absolute;
+        top: -1px; left: -1px;
+        width: 20px; height: 20px;
+        border-top: 2px solid var(--hud-primary);
+        border-left: 2px solid var(--hud-primary);
+    }
+    .container::after {
+        content: "";
+        position: absolute;
+        bottom: -1px; right: -1px;
+        width: 20px; height: 20px;
+        border-bottom: 2px solid var(--hud-primary);
+        border-right: 2px solid var(--hud-primary);
+    }
+
+    /* HEADER */
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 50px;
-        padding: 20px;
-        background: var(--glass-bg);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 20px;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    }
-    
-    h1 { 
-        margin: 0; 
-        font-size: 28px; 
-        font-weight: 800; 
-        background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-transform: lowercase;
-        letter-spacing: -1px;
+        border-bottom: 2px solid var(--hud-dim);
+        padding-bottom: 15px;
+        margin-bottom: 30px;
     }
 
-    /* Buttons */
-    .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    h1 {
+        margin: 0;
+        font-size: 24px;
+        letter-spacing: 4px;
+        text-shadow: 0 0 10px var(--hud-primary);
     }
-    
-    .btn-logout { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; }
-    .btn-logout:hover { background: white; color: black; }
-    
-    .btn-add { 
-        background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); 
-        color: white; 
-        box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
-    }
-    .btn-add:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(188, 19, 254, 0.5); }
-    
-    .btn-del { background: rgba(255, 0, 85, 0.2); color: var(--neon-red); border: 1px solid var(--neon-red); }
-    .btn-del:hover { background: var(--neon-red); color: white; }
-    
-    .btn-time { 
-        background: rgba(255,255,255,0.1); 
-        color: white; 
-        margin-right: 5px; 
-        border-radius: 8px;
-        padding: 5px 12px;
+
+    .status-badge {
         font-size: 12px;
+        background: var(--hud-dim);
+        padding: 5px 10px;
+        letter-spacing: 2px;
     }
-    .btn-time:hover { background: rgba(255,255,255,0.3); }
 
-    /* Timer Grid */
+    /* INPUTS & FORMS */
+    input {
+        background: transparent;
+        border: 1px solid var(--hud-dim);
+        color: var(--hud-primary);
+        padding: 15px;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 18px;
+        outline: none;
+        width: 100%;
+        transition: 0.3s;
+    }
+    input:focus {
+        border-color: var(--hud-primary);
+        box-shadow: 0 0 15px var(--hud-dim);
+        background: var(--glass);
+    }
+
+    /* TACTICAL BUTTONS */
+    .btn {
+        background: transparent;
+        border: 1px solid var(--hud-primary);
+        color: var(--hud-primary);
+        padding: 10px 20px;
+        cursor: pointer;
+        font-family: 'Share Tech Mono', monospace;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.2s;
+        /* Angled corners */
+        clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+    .btn:hover {
+        background: var(--hud-primary);
+        color: #000;
+        box-shadow: 0 0 20px var(--hud-primary);
+    }
+    
+    .btn-del {
+        border-color: var(--hud-alert);
+        color: var(--hud-alert);
+    }
+    .btn-del:hover {
+        background: var(--hud-alert);
+        color: #000;
+        box-shadow: 0 0 20px var(--hud-alert);
+    }
+
+    .btn-time {
+        font-size: 12px;
+        padding: 5px 10px;
+        margin-right: 5px;
+    }
+
+    /* TIMER GRID */
     .timer-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 30px;
     }
-    
+
     .timer-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 30px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease;
+        border: 1px solid var(--hud-dim);
+        background: rgba(0,20,0,0.3);
+        padding: 20px;
         position: relative;
-        overflow: hidden;
     }
     
-    .timer-card:hover { transform: translateY(-5px); }
-    
+    /* Technical markings on card */
     .timer-card::before {
-        content: '';
+        content: "SYS.MDL";
         position: absolute;
-        top: 0; left: 0; right: 0; height: 2px;
-        background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+        top: 5px; right: 5px;
+        font-size: 8px;
+        color: var(--hud-dim);
     }
 
     .timer-name {
-        font-size: 16px;
-        font-weight: 300;
-        color: rgba(255,255,255,0.7);
+        font-size: 14px;
+        color: var(--hud-primary);
+        border-bottom: 1px solid var(--hud-dim);
+        padding-bottom: 5px;
         margin-bottom: 15px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
     }
-    
+
     .timer-display {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 56px;
-        font-weight: 500;
-        color: white;
-        text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
-        margin-bottom: 25px;
-        transition: color 0.3s;
-    }
-    
-    /* Urgent State */
-    .timer-display.urgent {
-        color: var(--neon-red);
-        text-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
-        animation: pulse 1.5s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.7; text-shadow: 0 0 30px rgba(255, 0, 85, 0.9); }
-        100% { opacity: 1; }
-    }
-    
-    .controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 20px;
-    }
-    
-    /* Login & Forms */
-    .login-box {
-        width: 100%;
-        max-width: 400px;
-        margin: 15vh auto;
-        padding: 50px;
-        background: rgba(0,0,0,0.3);
-        backdrop-filter: blur(20px);
-        border-radius: 30px;
-        border: 1px solid rgba(255,255,255,0.1);
+        font-size: 48px;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
         text-align: center;
+        background: rgba(0,0,0,0.5);
+        border: 1px solid var(--hud-dim);
+        padding: 10px 0;
+    }
+
+    /* URGENT STATE */
+    .urgent {
+        color: var(--hud-alert);
+        border-color: var(--hud-alert);
+        animation: blink 1s infinite;
     }
     
-    input {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 15px;
-        border-radius: 12px;
-        color: white;
-        width: 60%;
-        font-family: 'Outfit', sans-serif;
-        outline: none;
-        transition: border 0.3s;
+    @keyframes blink {
+        0% { opacity: 1; text-shadow: 0 0 10px red; }
+        50% { opacity: 0.5; text-shadow: none; }
+        100% { opacity: 1; text-shadow: 0 0 10px red; }
     }
-    
-    input:focus { border-color: var(--neon-blue); }
+
+    /* LOGIN SCREEN SPECIFIC */
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+    .login-box {
+        border: 2px solid var(--hud-primary);
+        padding: 40px;
+        width: 400px;
+        text-align: center;
+        background: rgba(0,0,0,0.8);
+        box-shadow: 0 0 30px var(--hud-dim);
+        clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    }
     
     .create-form {
-        margin-top: 50px;
-        padding: 30px;
-        background: var(--glass-bg);
-        border-radius: 20px;
-        border: 1px dashed rgba(255,255,255,0.2);
+        margin-top: 40px;
+        border-top: 1px dashed var(--hud-dim);
+        padding-top: 20px;
         display: flex;
-        gap: 15px;
-        align-items: center;
-        justify-content: center;
+        gap: 10px;
     }
+
 </style>
 """
 
-# HTML TEMPLATES (Injected with styles)
 HTML_LOGIN = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ACCESS // TIMER</title>
+    <title>SECURE ACCESS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     __STYLES__
 </head>
 <body>
-    <div class="login-box">
-        <h1>system access</h1>
-        <br><br>
-        <form method="post">
-            <input type="text" name="code" placeholder="Enter Access Code" required autocomplete="off">
-            <br><br>
-            <button type="submit" class="btn btn-add">INITIALIZE</button>
-        </form>
-        {% if error %}
-            <p style="color:var(--neon-red); margin-top:20px; font-weight:600;">{{ error }}</p>
-        {% endif %}
+    <div class="login-wrapper">
+        <div class="login-box">
+            <h1 style="margin-bottom:30px;">// SYSTEM LOCKED</h1>
+            <form method="post">
+                <p style="text-align:left; font-size:12px; margin-bottom:5px;">ENTER AUTH CODE:</p>
+                <input type="text" name="code" required autocomplete="off" autofocus>
+                <br><br><br>
+                <button type="submit" class="btn" style="width:100%">INITIATE HANDSHAKE</button>
+            </form>
+            {% if error %}
+                <p style="color:var(--hud-alert); margin-top:20px;">>> ACCESS DENIED <<</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
@@ -253,35 +270,41 @@ HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DASHBOARD // TIMER</title>
+    <title>TACTICAL DASHBOARD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     __STYLES__
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>{{ role }} console</h1>
-            <a href="/logout" class="btn btn-logout">DISCONNECT</a>
+            <div>
+                <h1>// COMMAND UNIT: {{ role }}</h1>
+                <span style="font-size:10px; color:#666;">SYS.VER.2.0.4 // NET.SECURE</span>
+            </div>
+            <div>
+                <span class="status-badge">ONLINE</span>
+                <a href="/logout" class="btn" style="border:none; font-size:12px;">[ ABORT ]</a>
+            </div>
         </div>
 
         <div id="grid-container" class="timer-grid">
             {% for t_id, t_data in timers.items() %}
             <div class="timer-card" id="card-{{ t_id }}">
-                <div class="timer-name">{{ t_data.name }}</div>
-                <div class="timer-display" id="time-{{ t_id }}">...</div>
+                <div class="timer-name">Op: {{ t_data.name }}</div>
+                <div class="timer-display" id="time-{{ t_id }}">--:--:--</div>
                 
                 {% if role == 'admin' %}
-                <div class="controls">
+                <div class="controls" style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
                         <form action="/update_timer" method="post" style="display:inline">
                             <input type="hidden" name="id" value="{{ t_id }}">
-                            <button name="action" value="add_5" class="btn btn-time">+5m</button>
-                            <button name="action" value="sub_5" class="btn btn-time">-5m</button>
+                            <button name="action" value="add_5" class="btn btn-time">[ +5 ]</button>
+                            <button name="action" value="sub_5" class="btn btn-time">[ -5 ]</button>
                         </form>
                     </div>
                     <form action="/delete_timer" method="post">
                         <input type="hidden" name="id" value="{{ t_id }}">
-                        <button class="btn btn-del">x</button>
+                        <button class="btn btn-del" style="font-size:12px; padding: 5px 10px;">PURGE</button>
                     </form>
                 </div>
                 {% endif %}
@@ -291,10 +314,10 @@ HTML_DASHBOARD = """
         
         {% if role == 'admin' %}
         <div class="create-form">
-            <form action="/add_timer" method="post" style="display:flex; gap:10px; width:100%; justify-content:center;">
-                <input type="text" name="name" placeholder="Timer Name" required style="flex-grow:1; max-width:300px;">
-                <input type="number" name="minutes" placeholder="Mins" required style="width:80px;">
-                <button type="submit" class="btn btn-add">CREATE TIMER</button>
+            <form action="/add_timer" method="post" style="display:flex; gap:10px; width:100%;">
+                <input type="text" name="name" placeholder="OPERATION NAME" required style="flex-grow:1;">
+                <input type="number" name="minutes" placeholder="MIN" required style="width:80px;">
+                <button type="submit" class="btn">[ EXECUTE ]</button>
             </form>
         </div>
         {% endif %}
@@ -331,7 +354,7 @@ HTML_DASHBOARD = """
                         displayElement.innerText = formatTime(remaining);
                         
                         if (remaining <= 0) {
-                            displayElement.innerText = "00:00:00";
+                            displayElement.innerText = "TERMINATED";
                             displayElement.classList.add('urgent');
                         } else if (remaining < 300) { 
                             displayElement.classList.add('urgent');
@@ -365,7 +388,7 @@ def index():
             session['role'] = 'student'
             return redirect(url_for('dashboard'))
         else:
-            return render_template_string(HTML_LOGIN, error="INVALID ACCESS CODE")
+            return render_template_string(HTML_LOGIN, error="INVALID")
     return render_template_string(HTML_LOGIN)
 
 @app.route('/dashboard')
