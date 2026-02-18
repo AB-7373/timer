@@ -18,130 +18,232 @@ STUDENT_CODE = "student123"
 
 STYLES = """
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap');
     
-    body {
-        background-color: #121212;
-        color: #e0e0e0;
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 20px;
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --neon-blue: #00f3ff;
+        --neon-purple: #bc13fe;
+        --neon-red: #ff0055;
+        --text-main: #ffffff;
     }
-    
+
+    body {
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: var(--text-main);
+        font-family: 'Outfit', sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
     .container {
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
     }
     
+    /* Header Styles */
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
-        border-bottom: 1px solid #333;
-        padding-bottom: 20px;
+        margin-bottom: 50px;
+        padding: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
     
-    h1 { margin: 0; font-size: 24px; color: #ffffff; letter-spacing: -0.5px; }
-    
+    h1 { 
+        margin: 0; 
+        font-size: 28px; 
+        font-weight: 800; 
+        background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-transform: lowercase;
+        letter-spacing: -1px;
+    }
+
+    /* Buttons */
     .btn {
-        padding: 8px 16px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 6px;
+        border-radius: 50px;
         cursor: pointer;
         font-weight: 600;
         font-size: 14px;
-        transition: opacity 0.2s;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    .btn:hover { opacity: 0.9; }
-    .btn-logout { background-color: #333; color: white; text-decoration: none; }
-    .btn-add { background-color: #2196F3; color: white; }
-    .btn-del { background-color: #ef5350; color: white; }
-    .btn-time { background-color: #424242; color: white; margin-right: 4px; }
     
-    /* grid for timers */
+    .btn-logout { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; }
+    .btn-logout:hover { background: white; color: black; }
+    
+    .btn-add { 
+        background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple)); 
+        color: white; 
+        box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+    }
+    .btn-add:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(188, 19, 254, 0.5); }
+    
+    .btn-del { background: rgba(255, 0, 85, 0.2); color: var(--neon-red); border: 1px solid var(--neon-red); }
+    .btn-del:hover { background: var(--neon-red); color: white; }
+    
+    .btn-time { 
+        background: rgba(255,255,255,0.1); 
+        color: white; 
+        margin-right: 5px; 
+        border-radius: 8px;
+        padding: 5px 12px;
+        font-size: 12px;
+    }
+    .btn-time:hover { background: rgba(255,255,255,0.3); }
+
+    /* Timer Grid */
     .timer-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
     }
     
     .timer-card {
-        background-color: #1e1e1e;
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
     
+    .timer-card:hover { transform: translateY(-5px); }
+    
+    .timer-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 2px;
+        background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+    }
+
     .timer-name {
-        font-size: 18px;
-        font-weight: 600;
-        color: #aaaaaa;
-        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: 300;
+        color: rgba(255,255,255,0.7);
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
     }
     
     .timer-display {
-        font-size: 42px;
-        font-weight: 700;
-        font-variant-numeric: tabular-nums; /* prevents jitter */
-        color: #ffffff;
-        margin-bottom: 20px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 56px;
+        font-weight: 500;
+        color: white;
+        text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        margin-bottom: 25px;
+        transition: color 0.3s;
     }
     
-    .timer-display.urgent { color: #ef5350; }
+    /* Urgent State */
+    .timer-display.urgent {
+        color: var(--neon-red);
+        text-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; text-shadow: 0 0 30px rgba(255, 0, 85, 0.9); }
+        100% { opacity: 1; }
+    }
     
     .controls {
         display: flex;
         justify-content: space-between;
-        border-top: 1px solid #333;
-        padding-top: 15px;
+        align-items: center;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 20px;
     }
     
-    /* forms */
+    /* Login & Forms */
     .login-box {
+        width: 100%;
         max-width: 400px;
-        margin: 100px auto;
+        margin: 15vh auto;
+        padding: 50px;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        border: 1px solid rgba(255,255,255,0.1);
         text-align: center;
-        background: #1e1e1e;
-        padding: 40px;
-        border-radius: 12px;
     }
+    
     input {
-        padding: 12px;
-        border-radius: 6px;
-        border: 1px solid #333;
-        background: #2c2c2c;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 12px;
         color: white;
         width: 60%;
+        font-family: 'Outfit', sans-serif;
+        outline: none;
+        transition: border 0.3s;
     }
     
+    input:focus { border-color: var(--neon-blue); }
+    
     .create-form {
-        background: #1e1e1e;
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 40px;
+        margin-top: 50px;
+        padding: 30px;
+        background: var(--glass-bg);
+        border-radius: 20px;
+        border: 1px dashed rgba(255,255,255,0.2);
         display: flex;
-        gap: 10px;
+        gap: 15px;
         align-items: center;
+        justify-content: center;
     }
 </style>
 """
 
-# we use .replace to inject styles so we don't break python formatting
+# HTML TEMPLATES (Injected with styles)
 HTML_LOGIN = """
 <!DOCTYPE html>
 <html>
-<head><title>timer login</title>__STYLES__</head>
+<head>
+    <title>ACCESS // TIMER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    __STYLES__
+</head>
 <body>
     <div class="login-box">
-        <h1>timer system</h1>
-        <br>
+        <h1>system access</h1>
+        <br><br>
         <form method="post">
-            <input type="text" name="code" placeholder="enter code" required autocomplete="off">
-            <button type="submit" class="btn btn-add">enter</button>
+            <input type="text" name="code" placeholder="Enter Access Code" required autocomplete="off">
+            <br><br>
+            <button type="submit" class="btn btn-add">INITIALIZE</button>
         </form>
-        {% if error %}<p style="color:#ef5350; margin-top:10px;">{{ error }}</p>{% endif %}
+        {% if error %}
+            <p style="color:var(--neon-red); margin-top:20px; font-weight:600;">{{ error }}</p>
+        {% endif %}
     </div>
 </body>
 </html>
@@ -151,21 +253,22 @@ HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>dashboard</title>
+    <title>DASHBOARD // TIMER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     __STYLES__
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>{{ role }} view</h1>
-            <a href="/logout" class="btn btn-logout">logout</a>
+            <h1>{{ role }} console</h1>
+            <a href="/logout" class="btn btn-logout">DISCONNECT</a>
         </div>
 
         <div id="grid-container" class="timer-grid">
             {% for t_id, t_data in timers.items() %}
             <div class="timer-card" id="card-{{ t_id }}">
                 <div class="timer-name">{{ t_data.name }}</div>
-                <div class="timer-display" id="time-{{ t_id }}">loading...</div>
+                <div class="timer-display" id="time-{{ t_id }}">...</div>
                 
                 {% if role == 'admin' %}
                 <div class="controls">
@@ -178,7 +281,7 @@ HTML_DASHBOARD = """
                     </div>
                     <form action="/delete_timer" method="post">
                         <input type="hidden" name="id" value="{{ t_id }}">
-                        <button class="btn btn-del">delete</button>
+                        <button class="btn btn-del">x</button>
                     </form>
                 </div>
                 {% endif %}
@@ -188,26 +291,21 @@ HTML_DASHBOARD = """
         
         {% if role == 'admin' %}
         <div class="create-form">
-            <span style="font-weight:600">new timer:</span>
-            <form action="/add_timer" method="post" style="display:flex; gap:10px; width:100%;">
-                <input type="text" name="name" placeholder="activity name" required style="flex-grow:1;">
-                <input type="number" name="minutes" placeholder="mins" required style="width:80px;">
-                <button type="submit" class="btn btn-add">start</button>
+            <form action="/add_timer" method="post" style="display:flex; gap:10px; width:100%; justify-content:center;">
+                <input type="text" name="name" placeholder="Timer Name" required style="flex-grow:1; max-width:300px;">
+                <input type="number" name="minutes" placeholder="Mins" required style="width:80px;">
+                <button type="submit" class="btn btn-add">CREATE TIMER</button>
             </form>
         </div>
         {% endif %}
     </div>
 
     <script>
-        // this script runs in the browser
-        
         function formatTime(seconds) {
             if (seconds <= 0) return "00:00:00";
             const h = Math.floor(seconds / 3600);
             const m = Math.floor((seconds % 3600) / 60);
             const s = Math.floor(seconds % 60);
-            
-            // add leading zeros (e.g., 9 -> 09)
             const fmt = (val) => val.toString().padStart(2, '0');
             return `${fmt(h)}:${fmt(m)}:${fmt(s)}`;
         }
@@ -219,43 +317,33 @@ HTML_DASHBOARD = """
                 const serverTimers = data.timers;
                 const serverTime = data.server_now;
                 
-                // check if we need to reload page (if timer added/deleted)
-                // counting cards currently on screen
+                // Reload if count changes
                 const currentCards = document.querySelectorAll('.timer-card').length;
                 if (Object.keys(serverTimers).length !== currentCards) {
                     location.reload(); 
                     return;
                 }
 
-                // update each timer
                 for (const [id, timer] of Object.entries(serverTimers)) {
                     const displayElement = document.getElementById('time-' + id);
                     if (displayElement) {
-                        // calculate remaining time
-                        // we use serverTime to ensure sync across all devices
                         const remaining = timer.end_time - serverTime;
-                        
                         displayElement.innerText = formatTime(remaining);
                         
                         if (remaining <= 0) {
-                            displayElement.innerText = "TIME UP";
+                            displayElement.innerText = "00:00:00";
                             displayElement.classList.add('urgent');
-                        } else if (remaining < 300) { // less than 5 mins
+                        } else if (remaining < 300) { 
                             displayElement.classList.add('urgent');
                         } else {
                             displayElement.classList.remove('urgent');
                         }
                     }
                 }
-            } catch (error) {
-                console.error("sync error", error);
-            }
+            } catch (error) { console.error(error); }
         }
 
-        // run sync every 1 second (1000 ms)
         setInterval(syncTimers, 1000);
-        
-        // run immediately on load
         syncTimers();
     </script>
 </body>
@@ -277,22 +365,17 @@ def index():
             session['role'] = 'student'
             return redirect(url_for('dashboard'))
         else:
-            return render_template_string(HTML_LOGIN, error="invalid access code")
+            return render_template_string(HTML_LOGIN, error="INVALID ACCESS CODE")
     return render_template_string(HTML_LOGIN)
 
 @app.route('/dashboard')
 def dashboard():
-    if 'role' not in session:
-        return redirect(url_for('index'))
+    if 'role' not in session: return redirect(url_for('index'))
     return render_template_string(HTML_DASHBOARD, role=session['role'], timers=TIMERS)
 
 @app.route('/get_timers')
 def get_timers():
-    # this endpoint sends raw json data to the javascript
-    return jsonify({
-        'timers': TIMERS,
-        'server_now': time.time()
-    })
+    return jsonify({'timers': TIMERS, 'server_now': time.time()})
 
 @app.route('/add_timer', methods=['POST'])
 def add_timer():
@@ -301,20 +384,15 @@ def add_timer():
     try:
         minutes = int(request.form.get('minutes'))
         t_id = str(uuid.uuid4())
-        TIMERS[t_id] = {
-            'name': name,
-            'end_time': time.time() + (minutes * 60)
-        }
-    except:
-        pass
+        TIMERS[t_id] = {'name': name, 'end_time': time.time() + (minutes * 60)}
+    except: pass
     return redirect(url_for('dashboard'))
 
 @app.route('/delete_timer', methods=['POST'])
 def delete_timer():
     if session.get('role') != 'admin': return redirect(url_for('index'))
     t_id = request.form.get('id')
-    if t_id in TIMERS:
-        del TIMERS[t_id]
+    if t_id in TIMERS: del TIMERS[t_id]
     return redirect(url_for('dashboard'))
 
 @app.route('/update_timer', methods=['POST'])
@@ -323,10 +401,8 @@ def update_timer():
     t_id = request.form.get('id')
     action = request.form.get('action')
     if t_id in TIMERS:
-        if action == 'add_5':
-            TIMERS[t_id]['end_time'] += 300
-        elif action == 'sub_5':
-            TIMERS[t_id]['end_time'] -= 300
+        if action == 'add_5': TIMERS[t_id]['end_time'] += 300
+        elif action == 'sub_5': TIMERS[t_id]['end_time'] -= 300
     return redirect(url_for('dashboard'))
 
 @app.route('/logout')
